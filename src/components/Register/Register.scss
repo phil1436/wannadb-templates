@@ -1,4 +1,4 @@
-.login {
+.Register {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -16,6 +16,7 @@
         text-align: center;
         border: none;
         box-shadow: none;
+        width: 300px;
     }
     div {
         display: flex;
@@ -23,6 +24,7 @@
         justify-content: center;
         * {
             margin: 10px;
+            box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
         }
         input {
             width: 300px;

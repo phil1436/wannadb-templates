@@ -14,6 +14,7 @@ class APIService {
             return false;
         }
     }
+
     static async upload(
         username: string,
         name: string,

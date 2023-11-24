@@ -1,15 +1,31 @@
 import { Link } from 'react-router-dom';
-import './Login.scss';
+import './Register.scss';
 import { useState } from 'react';
-import APIService from '../../utils/ApiService';
+//import APIService from '../../utils/ApiService';
 
-function Login() {
+function Register() {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
+    const [repeatPassword, setRepeatPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState(' ');
 
-    const onLogin = () => {
-        APIService.login(name, password).then((data) => {
+    const onRegister = () => {
+        if (password !== repeatPassword) {
+            setErrorMessage('Passwords do not match!');
+            return;
+        }
+
+        if (password.length < 3) {
+            setErrorMessage('Password must be at least 3 characters long!');
+            return;
+        }
+
+        if (name.length < 3) {
+            setErrorMessage('Username must be at least 3 characters long!');
+            return;
+        }
+
+        /* APIService.login(name, password).then((data) => {
             if (data) {
                 setErrorMessage(' ');
                 localStorage.setItem('wannadbuser', name);
@@ -17,14 +33,14 @@ function Login() {
             } else {
                 setErrorMessage('Invalid username or password!');
             }
-        });
+        }); */
     };
 
     return (
-        <div className="login">
+        <div className="Register">
             <h1>
                 wanna<span className="db">db</span> <br />
-                <i>LOGIN</i>
+                <i>REGISTER</i>
             </h1>
             <div>
                 <p className="errorMsg">{errorMessage}</p>
@@ -40,21 +56,22 @@ function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button className="btn" onClick={onLogin}>
-                    Login
+                <input
+                    type="password"
+                    placeholder="Repeat Password"
+                    value={repeatPassword}
+                    onChange={(e) => setRepeatPassword(e.target.value)}
+                />
+
+                <button className="btn" onClick={onRegister}>
+                    Register
                 </button>
-                <Link className="btn" to="/">
+                <Link className="btn" to="/login">
                     Back
                 </Link>
-                <p>
-                    Don't have an account?{' '}
-                    <Link to="/register" style={{ color: 'var(--text-color)' }}>
-                        Register
-                    </Link>
-                </p>
             </div>
         </div>
     );
 }
 
-export default Login;
+export default Register;

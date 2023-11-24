@@ -85,11 +85,9 @@ function Navbar() {
                 </a>
                 {username !== '' ? (
                     <Link to={'/profile'}>
-                        <img
-                            src="https://www.digitary.net/wp-content/uploads/2021/07/Generic-Profile-Image.png"
-                            alt=""
-                            className="profilePicture"
-                        />
+                        <div className="profilePicture">
+                            {username.slice(0, 1).toUpperCase()}
+                        </div>
                     </Link>
                 ) : (
                     <Link to={'/login'}>Login</Link>

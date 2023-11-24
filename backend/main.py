@@ -1,4 +1,5 @@
 import os
+import sys
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 
@@ -6,9 +7,17 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-# Hardcoded username and password (for demonstration purposes)
-valid_username = "phil"
-valid_password = "123"
+DEVMODE = False
+
+
+for arg in sys.argv:
+    if arg == "-dev":
+        DEVMODE = True
+
+if DEVMODE:
+    os.chdir("dev")
+    print("*** Running in dev mode ***")
+
 
 users= [
     {
@@ -78,7 +87,7 @@ def upload():
             name = name + ".txt"
             
         f =  open(f"uploads/{data['user']}/{name}", "w")
-        f.write(data['data'])
+        f.write(data['data'].replace("\r\n", "\n"))
         f.close()
         return jsonify({'message': 'Upload successful'}), 200
     except Exception as e:
@@ -93,5 +102,6 @@ def get_file_names(user):
     except Exception as e:
         return jsonify([]), 200
 
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=DEVMODE, host='localhost', port=5000)
