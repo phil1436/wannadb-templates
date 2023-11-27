@@ -1,26 +1,14 @@
 import { Link } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import './Home.scss';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import APIService from '../../utils/ApiService';
+import { useGetUsername } from '../../providers/UserProvider';
 
 function Home() {
-    const getUserName = () => {
-        const name = localStorage.getItem('wannadbuser');
-        if (name) {
-            return name;
-        }
-        return '';
-    };
+    const getUserName = useGetUsername();
 
-    const [username, setUsername] = useState(getUserName());
-
-    useEffect(() => {
-        const name = localStorage.getItem('wannadbuser');
-        if (name) {
-            setUsername(name);
-        }
-    }, []);
+    const [username] = useState(getUserName());
 
     const [file, setFile] = useState<string | ArrayBuffer | null>(null);
     const [fileName, setFileName] = useState<string | ArrayBuffer | null>(null);

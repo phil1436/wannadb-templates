@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import './Register.scss';
 import { useState } from 'react';
-//import APIService from '../../utils/ApiService';
 
 function Register() {
     const [name, setName] = useState('');
@@ -24,16 +23,6 @@ function Register() {
             setErrorMessage('Username must be at least 3 characters long!');
             return;
         }
-
-        /* APIService.login(name, password).then((data) => {
-            if (data) {
-                setErrorMessage(' ');
-                localStorage.setItem('wannadbuser', name);
-                window.location.href = '/';
-            } else {
-                setErrorMessage('Invalid username or password!');
-            }
-        }); */
     };
 
     return (

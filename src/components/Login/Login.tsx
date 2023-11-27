@@ -1,19 +1,23 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Login.scss';
 import { useState } from 'react';
 import APIService from '../../utils/ApiService';
+import { useLogin } from '../../providers/UserProvider';
 
 function Login() {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState(' ');
 
+    const navigate = useNavigate();
+    const login = useLogin();
+
     const onLogin = () => {
         APIService.login(name, password).then((data) => {
             if (data) {
                 setErrorMessage(' ');
-                localStorage.setItem('wannadbuser', name);
-                window.location.href = '/';
+                login(name);
+                navigate('/');
             } else {
                 setErrorMessage('Invalid username or password!');
             }

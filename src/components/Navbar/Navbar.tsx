@@ -1,81 +1,37 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.scss';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import React from 'react';
+//import { useIsDarkTheme, useToggleTheme } from '../../providers/ThemeProvider';
+import { useGetUsername } from '../../providers/UserProvider';
 
 function Navbar() {
-    const getUserName = () => {
-        const name = localStorage.getItem('wannadbuser');
-        if (name) {
-            return name;
-        }
-        return '';
-    };
-    const getTheme = () => {
-        const theme = localStorage.getItem('wanndbtheme');
-        if (theme) {
-            document.documentElement.setAttribute('data-theme', 'light');
+    /* const isDarkTheme = useIsDarkTheme();
 
-            return theme;
-        }
+    const toggleTheme = useToggleTheme(); */
+    const navigate = useNavigate();
 
-        // get browser theme
-        const userPrefersDark =
-            window.matchMedia &&
-            window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (userPrefersDark) {
-            return 'dark';
-        }
-        return 'light';
-    };
+    const getUserName = useGetUsername();
 
-    const setColorTheme = () => {
-        localStorage.setItem('wanndbtheme', theme);
-        document.documentElement.setAttribute('data-theme', theme);
-    };
-
-    const [username, setUsername] = useState(getUserName());
-    const [theme, setTheme] = useState(getTheme());
-
-    useEffect(() => {
-        const name = localStorage.getItem('wannadbuser');
-        if (name) {
-            setUsername(name);
-        }
-    }, []);
-
-    useEffect(() => {
-        getTheme();
-        setColorTheme();
-    }, [theme]);
-
-    const toggleTheme = () => {
-        if (theme === 'dark') {
-            setTheme('light');
-            setColorTheme();
-            return;
-        }
-        setTheme('dark');
-        setColorTheme();
-    };
+    const [username] = useState(getUserName());
 
     return (
         <div className="Navbar">
-            <div className="logo" onClick={() => (window.location.href = '/')}>
+            <div className="logo" onClick={() => navigate('/')}>
                 wanna<span className="db">db</span>
             </div>
             <div className="links">
-                <div className="toggle-switch">
+                {/* <div className="toggle-switch">
                     <label className="switch-label">
                         {React.createElement('input', {
                             type: 'checkbox',
-                            defaultChecked: theme == 'light',
+                            defaultChecked: !isDarkTheme,
                             onChange: toggleTheme,
                             className: 'checkbox',
                         })}
                         <span className="slider"></span>
                     </label>
-                </div>
+                </div> */}
                 <Link to="/">Home</Link>
                 <a
                     href="https://www.youtube.com/watch?v=A7AjtPGt2rM"
@@ -83,6 +39,7 @@ function Navbar() {
                 >
                     About
                 </a>
+                <Link to="/settings">Settings</Link>
                 {username !== '' ? (
                     <Link to={'/profile'}>
                         <div className="profilePicture">

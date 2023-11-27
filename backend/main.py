@@ -9,14 +9,16 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 DEVMODE = False
 
+BASEPATH = ""
 
 for arg in sys.argv:
     if arg == "-dev":
         DEVMODE = True
 
 if DEVMODE:
-    os.chdir("dev")
+    #os.chdir("dev")
     print("*** Running in dev mode ***")
+    BASEPATH = "dev/"
 
 
 users= [
@@ -80,13 +82,13 @@ def upload():
 
     # save a txt file with the data
     try:
-        os.makedirs(f"uploads/{data['user']}", exist_ok=True)
+        os.makedirs(f"{BASEPATH}uploads/{data['user']}", exist_ok=True)
         
         name = data['name'].replace(" ", "_")
         if not ".txt" in name:
             name = name + ".txt"
             
-        f =  open(f"uploads/{data['user']}/{name}", "w")
+        f =  open(f"{BASEPATH}uploads/{data['user']}/{name}", "w")
         f.write(data['data'].replace("\r\n", "\n"))
         f.close()
         return jsonify({'message': 'Upload successful'}), 200
@@ -97,7 +99,7 @@ def upload():
 @cross_origin()
 def get_file_names(user):
     try:
-        files = os.listdir(f"uploads/{user}")
+        files = os.listdir(f"{BASEPATH}uploads/{user}")
         return jsonify(files), 200
     except Exception as e:
         return jsonify([]), 200

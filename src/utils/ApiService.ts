@@ -5,7 +5,7 @@ class APIService {
 
     static async login(username: string, password: string): Promise<boolean> {
         try {
-            const resp = await axios.post(this.host + '/login', {
+            const resp = await axios.post(`${this.host}/login`, {
                 username: username,
                 password: password,
             });
@@ -21,7 +21,7 @@ class APIService {
         data: string
     ): Promise<string> {
         try {
-            const resp = await axios.post(this.host + '/upload', {
+            const resp = await axios.post(`${this.host}/upload`, {
                 user: username,
                 name: name,
                 data: data,
@@ -34,7 +34,7 @@ class APIService {
 
     static getFileNames(username: string): Promise<string[]> {
         return axios
-            .get(this.host + '/get/file/names/' + username)
+            .get(`${this.host}/get/file/names/${username}`)
             .then((resp) => {
                 return resp.data;
             })

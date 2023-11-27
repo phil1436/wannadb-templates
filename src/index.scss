@@ -14,6 +14,7 @@ body {
     color: #083d60;
 }
 .btn {
+    max-width: 400px;
     height: 35px;
     border-radius: 5px;
     border: none;
@@ -27,6 +28,7 @@ body {
     line-height: 35px;
     &:hover {
         background-color: #083d60;
+        color: #ffffff;
     }
 }
 
@@ -53,7 +55,7 @@ body {
     --text-color: #ffffff;
 }
 [data-theme='light'] {
-    --bg-color: #ebebeb;
+    --bg-color: #e2e2e2;
     --btn-color: #ffffff;
     --text-color: #000000;
 }

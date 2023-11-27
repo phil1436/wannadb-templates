@@ -1,18 +1,23 @@
+import { useNavigate } from 'react-router-dom';
 import APIService from '../../utils/ApiService';
 import Navbar from '../Navbar/Navbar';
 import './Profile.scss';
 import { useEffect, useState } from 'react';
+import {
+    useGetUsername,
+    useLogOut,
+    useLoggedIn,
+} from '../../providers/UserProvider';
+import MyFiles from '../MyFiles/MyFiles';
 
 function Home() {
-    const getUserName = () => {
-        const name = localStorage.getItem('wannadbuser');
-        if (name) {
-            return name;
-        }
-        return '';
-    };
+    const navigate = useNavigate();
 
-    const [username, setUsername] = useState(getUserName());
+    const getUserName = useGetUsername();
+    const isLoggedIn = useLoggedIn();
+    const logOut = useLogOut();
+
+    const [username] = useState(getUserName());
     const [fileNames, setFileNames] = useState<string[]>([]);
 
     const getFiles = async () => {
@@ -22,15 +27,11 @@ function Home() {
     };
 
     useEffect(() => {
-        getFiles();
-    }, []);
-
-    useEffect(() => {
-        const name = localStorage.getItem('wannadbuser');
-        if (name) {
-            setUsername(name);
+        if (!isLoggedIn) {
+            navigate('/');
         }
-    }, []);
+        getFiles();
+    }, [username]);
 
     return (
         <div className="Profile">
@@ -40,25 +41,24 @@ function Home() {
                     {username.slice(0, -2)}
                     <span className="db">{username.slice(-2)}</span>
                 </h1>
-                {fileNames.length > 0 && (
-                    <h2>
-                        <span className="db">My</span>Files
-                    </h2>
-                )}
-                <ul>
-                    {fileNames.map((fileName) => (
-                        <li key={fileName}>{fileName}</li>
-                    ))}
-                </ul>
-                <button
-                    className="btn"
-                    onClick={() => {
-                        localStorage.removeItem('wannadbuser');
-                        window.location.href = '/';
-                    }}
+                <h2>
+                    <span className="db">My</span>Files
+                </h2>
+                <MyFiles fileNames={fileNames} />
+                <div
+                    className="ver"
+                    style={{ width: '200px', marginTop: '25px' }}
                 >
-                    Logout
-                </button>
+                    <button
+                        className="btn"
+                        onClick={() => {
+                            logOut();
+                            navigate('/');
+                        }}
+                    >
+                        Logout
+                    </button>
+                </div>
             </div>
         </div>
     );
