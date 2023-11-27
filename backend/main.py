@@ -104,6 +104,16 @@ def get_file_names(user):
     except Exception as e:
         return jsonify([]), 200
 
-
+@app.route('/get/file/content/<user>/<filename>', methods=['GET'])
+@cross_origin()
+def get_file_content(user, filename):
+    try:
+        f = open(f"{BASEPATH}uploads/{user}/{filename}", "r")
+        content = f.read()
+        f.close()
+        return jsonify(content), 200
+    except Exception as e:
+        return jsonify({"message": "Error: File not found"}), 404
+    
 if __name__ == '__main__':
     app.run(debug=DEVMODE, host='localhost', port=5000)

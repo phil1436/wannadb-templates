@@ -42,6 +42,17 @@ class APIService {
                 return [];
             });
     }
+
+    static getFileContent(username: string, filename: string): Promise<string> {
+        return axios
+            .get(`${this.host}/get/file/content/${username}/${filename}`)
+            .then((resp) => {
+                return resp.data;
+            })
+            .catch(() => {
+                return 'Error getting file content!';
+            });
+    }
 }
 
 export default APIService;
